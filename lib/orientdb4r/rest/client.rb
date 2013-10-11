@@ -323,6 +323,46 @@ module Orientdb4r
       clazz
     end
 
+    # ----------------------------------------------------------------- VERTEX
+
+    def create_vertex(base, properties = {})
+      sql = "CREATE VERTEX #{base}"
+      props = ""
+      unless properties.empty?
+        properties.each do |k,v|
+          if props.empty?
+            props << " SET "
+          else
+            props << ", "
+          end
+          props << "#{k} = '#{v}'"
+        end
+      end
+      sql << props
+#      puts "create_vertex #{sql.inspect}"
+      entries = command sql
+      entries['result']
+    end
+
+    def get_vertex(base, properties = {})
+      sql = "SELECT * FROM #{base}"
+      props = ""
+      unless properties.empty?
+        properties.each do |k,v|
+          if props.empty?
+            props << " WHERE "
+          else
+            props << ", "
+          end
+          props << "#{k} = '#{v}'"
+        end
+      end
+      sql << props
+      entries = command sql
+#      puts "get_vertex #{sql.inspect} => #{entries.inspect}"
+      
+      entries['result']
+    end
 
     # ----------------------------------------------------------------- DOCUMENT
 
