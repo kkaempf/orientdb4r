@@ -341,7 +341,7 @@ module Orientdb4r
       sql << props
 #      puts "create_vertex #{sql.inspect}"
       entries = command sql
-      entries['result'].map { |v| Vertext.new(self, v) }
+      Vertex.new(self, entries['result'][0])
     end
 
     def get_vertex(base, properties = {})
@@ -361,7 +361,7 @@ module Orientdb4r
       entries = command sql
 #      puts "get_vertex #{sql.inspect} => #{entries.inspect}"
       
-      entries['result']
+      Vertex.new(self, entries['result'][0])
     end
 
     # ----------------------------------------------------------------- DOCUMENT

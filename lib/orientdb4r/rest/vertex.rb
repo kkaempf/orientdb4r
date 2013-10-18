@@ -9,12 +9,14 @@ module Orientdb4r
     before [:create_document, :get_document, :update_document, :delete_document], :assert_connected
     around [:query, :command], :time_around
 
+    attr_reader :client, :type, :rid, :version, :class
     #
     # Intialize Vertex from result hash
     #
-    # {"@type"=>"d", "@rid"=>"#11:218", "@version"=>1, "@class"=>"CIMClass", "name"=>"CIM_Location", "scheme"=>"Core", "superclass"=>"CIM_ManagedElement", "out_Superclass"=>"#11:110"}
     #
-    def initialize(hash) #:nodoc:
+    def initialize(client, hash) #:nodoc:
+#      puts "Vertex.new #{hash}"
+      @client = client
       @type = hash['@type']
       @rid = Rid.new hash['@rid']
       @version = hash['@version']
@@ -22,6 +24,13 @@ module Orientdb4r
       @properties = hash.select { |k,v| k =~ /^[^@]/ }
     end
 
+    def to_s
+      "Vertex #{@rid} : #{@properties.inspect}"
+    end
+    
+    def method_missing name, *args
+      @properties[name]
+    end
   end
 
 end
