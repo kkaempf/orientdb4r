@@ -364,6 +364,29 @@ module Orientdb4r
       Vertex.new(self, entries['result'][0])
     end
 
+    # ----------------------------------------------------------------- EDGE
+
+    # create edge
+    # FIXME: add properties
+    def create_edge(from, to, base = 'E')
+      sql = "CREATE EDGE #{base} FROM "
+      sql << Edge.target(from)
+      sql << " TO "
+      sql << Edge.target(to)
+      puts "create_edge #{sql.inspect}"
+      entries = command sql
+      Edge.new(self, entries['result'][0])
+    end
+
+    def get_edge(edge)
+      sql = "SELECT * FROM #{edge.base}"
+      sql << props
+      entries = command sql
+#      puts "get_edge #{sql.inspect} => #{entries.inspect}"
+      
+      Edge.new(self, entries['result'][0])
+    end
+
     # ----------------------------------------------------------------- DOCUMENT
 
     def create_document(doc) #:nodoc:

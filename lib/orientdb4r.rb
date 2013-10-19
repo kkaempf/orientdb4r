@@ -24,6 +24,7 @@ module Orientdb4r
   autoload :RoundRobin,       'orientdb4r/load_balancing'
   autoload :DocumentMetadata, 'orientdb4r/rest/model'
   autoload :Vertex,           'orientdb4r/rest/vertex'
+  autoload :Edge,             'orientdb4r/rest/edge'
 
 
   class << self
