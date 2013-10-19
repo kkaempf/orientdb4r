@@ -29,7 +29,7 @@ module Orientdb4r
     end
     
     def method_missing name, *args
-      @properties[name]
+      @properties[name.to_s]
     end
   end
 
