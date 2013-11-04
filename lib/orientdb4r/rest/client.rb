@@ -387,6 +387,24 @@ module Orientdb4r
       Edge.new(self, entries['result'][0])
     end
 
+    # ----------------------------------------------------------------- INSERT
+
+    # insert into class
+    def insert(klass, values)
+      sql = "INSERT INTO #{klass} SET "
+      first = true
+      values.each do |key,value|
+        next unless value
+        sql << ", " unless first
+        # escape single quotes
+        escape = value.sub(/\'/, "\\'")
+        sql << "#{key} = '#{value}'"
+        first = false
+      end
+      puts "insert #{sql.inspect}"
+      entries = command sql
+    end
+
     # ----------------------------------------------------------------- DOCUMENT
 
     def create_document(doc) #:nodoc:
