@@ -401,8 +401,9 @@ module Orientdb4r
         sql << "#{key} = '#{value}'"
         first = false
       end
-      puts "insert #{sql.inspect}"
+#      puts "insert #{sql.inspect}"
       entries = command sql
+      Vertex.new(self, entries['result'][0])
     end
 
     # ----------------------------------------------------------------- DOCUMENT
