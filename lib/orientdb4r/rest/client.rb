@@ -403,7 +403,31 @@ module Orientdb4r
       end
 #      puts "insert #{sql.inspect}"
       entries = command sql
-      Vertex.new(self, entries['result'][0])
+      Vertex.new(self, entries['result'][0]) rescue nil
+    end
+
+    # ----------------------------------------------------------------- LOOKUP
+
+    # lookup class and values
+    def lookup(klass, values)
+      sql = "SELECT FROM #{klass} WHERE "
+      first = true
+      values.each do |key,value|
+        next unless value
+        sql << " AND " unless first
+        # escape single quotes
+        escape = value.sub(/\'/, "\\'")
+        sql << "#{key} = '#{value}'"
+        first = false
+      end
+      entries = command sql
+#      puts "lookup #{sql.inspect} => #{entries['result'].inspect}"
+      res = entries['result']
+      if res.empty?
+        nil
+      else
+        Vertex.new(self, res[0])
+      end
     end
 
     # ----------------------------------------------------------------- DOCUMENT
